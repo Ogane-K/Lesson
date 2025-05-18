@@ -80,7 +80,7 @@ public class AuthController {
 		User createdUser = userService.createUser(signupForm);
 		String requestUrl = new String(httpServletRequest.getRequestURL());
 		signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
-		redirectAttributes.addFlashAttribute("succsessMessage",
+		redirectAttributes.addFlashAttribute("successMessage",
 				"ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
 
 		return "redirect:/";
@@ -93,8 +93,8 @@ public class AuthController {
 		if (verificationToken != null) {
 			User user = verificationToken.getUser();
 			userService.enableUser(user);
-			String succsessMessage = "会員登録が完了しました";
-			model.addAttribute("succsessMessage", succsessMessage);
+			String successMessage = "会員登録が完了しました";
+			model.addAttribute("successMessage", successMessage);
 		} else {
 			String errorMessage = "トークンが無効です";
 			model.addAttribute("errorMessage", errorMessage);

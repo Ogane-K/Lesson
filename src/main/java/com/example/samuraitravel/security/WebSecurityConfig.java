@@ -20,7 +20,7 @@ public class WebSecurityConfig {
 				//	アクセス許可範囲の設定
 				.authorizeHttpRequests((requests) -> requests
 						//	下記URLは全ユーザーにアクセス許可
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/login","/signup")
+						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/login","/signup/**")
 						.permitAll()
 						//	それ以外のリクエストは認証が必要
 						.anyRequest().authenticated())
