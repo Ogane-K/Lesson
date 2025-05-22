@@ -14,14 +14,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				//	アクセス許可範囲の設定
 				.authorizeHttpRequests((requests) -> requests
 						//	下記URLは全ユーザーにアクセス許可
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/login","/signup/**")
+						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/login", "/signup/**")
 						.permitAll()
+						//	下記URLは管理者(ADMIN)にのみアクセス許可
+						.requestMatchers("/admin/**").hasRole("ADMIN")
 						//	それ以外のリクエストは認証が必要
 						.anyRequest().authenticated())
 				//	ログイン時のURL設定
@@ -45,8 +47,8 @@ public class WebSecurityConfig {
 
 	}
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
+	@Bean
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
