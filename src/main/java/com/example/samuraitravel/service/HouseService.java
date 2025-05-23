@@ -39,6 +39,10 @@ public class HouseService {
 
 		return houseRepository.findById(id);
 	}
+	
+	
+	
+	
 
 	@Transactional
 	public void createHouse(HouseRegisterForm houseRegisterForm) {
