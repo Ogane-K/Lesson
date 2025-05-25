@@ -40,6 +40,15 @@ public class HouseService {
 		return houseRepository.findById(id);
 	}
 	
+//	民宿のレコード数を取得する
+	public long countHouses() {
+		return houseRepository.count();
+	}
+	
+//	idが最も大きい民宿を取得する
+	public House findFirstHouseByOderByDesc() {
+		return houseRepository.findFirstByOrderByIdDesc();
+	}
 	
 	
 	

@@ -19,16 +19,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.samuraitravel.entity.House;
+import com.example.samuraitravel.form.HouseEditForm;
 import com.example.samuraitravel.form.HouseRegisterForm;
 import com.example.samuraitravel.service.HouseService;
 
 @Controller
 @RequestMapping("/admin/houses")
 public class AdminHouseController {
+
+	
 	private final HouseService houseService;
 
 	public AdminHouseController(HouseService houseService) {
 		this.houseService = houseService;
+		
 	}
 
 	@GetMapping
@@ -66,6 +70,38 @@ public class AdminHouseController {
 		model.addAttribute("house", house);
 
 		return "admin/houses/show";
+	}
+
+	@GetMapping("/{id}/edit")
+	public String edit(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
+
+		//	idの値で該当の民宿が在るかをチェック
+		Optional<House> optionalHouse = houseService.findHousesById(id);
+		//	なかったらエラーメッセージを返す
+		if (optionalHouse.isEmpty()) {
+			redirectAttributes.addFlashAttribute("errorMessage", "民宿が存在しません。");
+
+			return "redirect:/admin/houses";
+		}
+
+		//	あったら該当する民宿のデータをhouseに入れる	
+		House house = optionalHouse.get();
+
+		//	Modelに渡すためのフォームクラスに、検索した民宿の現在のデータを入れる	
+		HouseEditForm houseEditForm = new HouseEditForm(house.getName(),
+				null,
+				house.getDescription(),
+				house.getPrice(),
+				house.getCapacity(),
+				house.getPostalCode(),
+				house.getAddress(),
+				house.getPhoneNumber());
+
+		//	エンティティとフォームクラスをModelに入れる
+		model.addAttribute("house", house);
+		model.addAttribute("houseEditForm", houseEditForm);
+
+		return "admin/houses/edit";
 	}
 
 	@GetMapping("/register")

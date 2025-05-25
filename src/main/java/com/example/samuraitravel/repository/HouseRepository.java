@@ -9,5 +9,6 @@ import com.example.samuraitravel.entity.House;
 public interface HouseRepository extends JpaRepository<House, Integer> {
 
 	public Page<House> findByNameLike(String keyword, Pageable pageable);
-
+	public House findFirstByOrderByIdDesc();
+	
 }
