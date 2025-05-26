@@ -21,7 +21,7 @@ public class HouseEditForm {
 	@NotBlank(message = "説明を入力してください。")
 	private String description;
 
-	@NotBlank(message = "宿泊料金を入力してください。")
+	@NotNull(message = "宿泊料金を入力してください。")
 	@Min(value = 1, message = "宿泊料金は1円以上に設定してください。")
 	private Integer price;
 

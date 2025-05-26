@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.samuraitravel.entity.House;
+import com.example.samuraitravel.form.HouseEditForm;
 import com.example.samuraitravel.form.HouseRegisterForm;
 import com.example.samuraitravel.repository.HouseRepository;
 
@@ -39,19 +40,16 @@ public class HouseService {
 
 		return houseRepository.findById(id);
 	}
-	
-//	民宿のレコード数を取得する
+
+	// 民宿のレコード数を取得する
 	public long countHouses() {
 		return houseRepository.count();
 	}
-	
-//	idが最も大きい民宿を取得する
+
+	// idが最も大きい民宿を取得する
 	public House findFirstHouseByOderByDesc() {
 		return houseRepository.findFirstByOrderByIdDesc();
 	}
-	
-	
-	
 
 	@Transactional
 	public void createHouse(HouseRegisterForm houseRegisterForm) {
@@ -90,10 +88,37 @@ public class HouseService {
 
 	public void copyImageFile(MultipartFile imageFile, Path filePath) {
 		try {
-			Files.copy(imageFile.getInputStream(),filePath);
-		}catch(IOException e) {
+			Files.copy(imageFile.getInputStream(), filePath);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Transactional
+	public void updateHouse(HouseEditForm houseEditForm, House house) {
+		MultipartFile imageFile = houseEditForm.getImageFile();
+
+		// 画像ファイルがある場合には、名前をハッシュ化して保存する
+		if (!imageFile.isEmpty()) {
+			String imageName = imageFile.getOriginalFilename();
+			String hashedImageName = generateNewFileName(imageName);
+			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImageName);
+			copyImageFile(imageFile, filePath);
+			house.setImageName(hashedImageName);
+		}
+		house.setName(houseEditForm.getName());
+		house.setDescription(houseEditForm.getDescription());
+		house.setPrice(houseEditForm.getPrice());
+		house.setCapacity(houseEditForm.getCapacity());
+		house.setPostalCode(houseEditForm.getPostalCode());
+		house.setAddress(houseEditForm.getAddress());
+		house.setPhoneNumber(houseEditForm.getPhoneNumber());
+
+		houseRepository.save(house);
+	}
+
+	@Transactional
+	public void deleteHouse(House house){
+		houseRepository.delete(house);
+	}
 }

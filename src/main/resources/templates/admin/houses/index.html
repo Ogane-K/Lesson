@@ -30,9 +30,10 @@
 								</div>
 							</form>
 
-							<a th:href="@{/admin/houses/register}" class="btn text-white shadow-sm mb-3 samuraitravel-btn">登録</a>
+							<a th:href="@{/admin/houses/register}"
+								class="btn text-white shadow-sm mb-3 samuraitravel-btn">登録</a>
 						</div>
-						
+
 						<div th:if="${successMessage}" class="alert alert-info">
 							<span th:text="${successMessage}"></span>
 						</div>
@@ -40,7 +41,7 @@
 						<div th:if="${errorMessage}" class="alert alert-danger">
 							<span th:text="${errorMessage}"></span>
 						</div>
-						
+
 						<!--テーブル部分-->
 						<table class="table">
 							<thead>
@@ -50,6 +51,7 @@
 									<th scope="col">郵便番号</th>
 									<th scope="col">住所</th>
 									<th scope="col">電話番号</th>
+									<th scope="col"></th>
 									<th scope="col"></th>
 								</tr>
 							</thead>
@@ -62,6 +64,32 @@
 									<td th:text="${house.address}"></td>
 									<td th:text="${house.phoneNumber}"></td>
 									<td><a th:href="@{/admin/houses/__${house.id}__}">詳細</a></td>
+									<td><a href="#" class="samuraitravel-link-danger" data-bs-toggle="modal"
+											th:data-bs-target="${'#deleteHouseModal' + house.id}">削除</a></td>
+
+									<!-- 削除用モーダル -->
+									<div class="modal fade" th:id="${'deleteHouseModal' + house.id}" tabindex="-1"
+										th:aria-labelledby="${'deleteHouseModalLabel' + house.id}">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" th:id="${'deleteHouseModal' + house.id}"
+														th:text="${house.name + 'を削除してもよろしいですか？'}"></h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal"
+														aria-label="閉じる"></button>
+												</div>
+												<div class="modal-footer">
+													<form method="post" 
+														th:action="@{/admin/houses/__${house.id}__/delete}">
+														<button type="submit"
+															class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
 								</tr>
 							</tbody>
 						</table>
@@ -74,10 +102,9 @@
 										<span th:if="${housePage.isFirst()}" class="page-link disabled">前</span>
 										<a th:unless="${housePage.isFirst}"
 											th:href="@{/admin/houses(page=${housePage.number - 1},keyword=${keyword})}"
-											class="page-link samuraitravel-page-link" >前</a>
+											class="page-link samuraitravel-page-link">前</a>
 									</li>
-									<li th:each="i : ${#numbers.sequence(0,housePage.totalPages -1)}"
-										class="page-item">
+									<li th:each="i : ${#numbers.sequence(0,housePage.totalPages -1)}" class="page-item">
 										<span th:if="${i == housePage.number}"
 											class="page-link active samuraitravel-active" th:text="${i + 1 }"></span>
 										<a th:unless="${i == housePage.number}"

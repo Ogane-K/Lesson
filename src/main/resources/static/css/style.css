@@ -72,9 +72,26 @@ footer {
 	white-space: pre-wrap;
 }
 
+.samuraitravel-link-danger{
+	color: #f2594b;
+}
 
-@media screen and(min-whidth: 1400px) {
-	.samurai-travel-container {
+.samuraitravel-link-danger:hover {
+	color:#a63c3c;
+}
+
+.samuraitravel-btn-danger {
+	background-color: #f2594b !important;
+	transition: 0.1s;
+}
+
+.samuraitravel-btn-danger:hover {
+	opacity: 0.8;
+}
+
+
+@media screen and(min-width: 1400px) {
+	.samuraitravel-container {
 		max-width: 1200px;
 	}
 }

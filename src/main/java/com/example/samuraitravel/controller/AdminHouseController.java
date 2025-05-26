@@ -22,17 +22,17 @@ import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.form.HouseEditForm;
 import com.example.samuraitravel.form.HouseRegisterForm;
 import com.example.samuraitravel.service.HouseService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin/houses")
 public class AdminHouseController {
 
-	
 	private final HouseService houseService;
 
 	public AdminHouseController(HouseService houseService) {
 		this.houseService = houseService;
-		
+
 	}
 
 	@GetMapping
@@ -75,19 +75,19 @@ public class AdminHouseController {
 	@GetMapping("/{id}/edit")
 	public String edit(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
 
-		//	idの値で該当の民宿が在るかをチェック
+		// idの値で該当の民宿が在るかをチェック
 		Optional<House> optionalHouse = houseService.findHousesById(id);
-		//	なかったらエラーメッセージを返す
+		// なかったらエラーメッセージを返す
 		if (optionalHouse.isEmpty()) {
 			redirectAttributes.addFlashAttribute("errorMessage", "民宿が存在しません。");
 
 			return "redirect:/admin/houses";
 		}
 
-		//	あったら該当する民宿のデータをhouseに入れる	
+		// あったら該当する民宿のデータをhouseに入れる
 		House house = optionalHouse.get();
 
-		//	Modelに渡すためのフォームクラスに、検索した民宿の現在のデータを入れる	
+		// Modelに渡すためのフォームクラスに、検索した民宿の現在のデータを入れる
 		HouseEditForm houseEditForm = new HouseEditForm(house.getName(),
 				null,
 				house.getDescription(),
@@ -97,7 +97,7 @@ public class AdminHouseController {
 				house.getAddress(),
 				house.getPhoneNumber());
 
-		//	エンティティとフォームクラスをModelに入れる
+		// エンティティとフォームクラスをModelに入れる
 		model.addAttribute("house", house);
 		model.addAttribute("houseEditForm", houseEditForm);
 
@@ -126,5 +126,54 @@ public class AdminHouseController {
 
 		return "redirect:/admin/houses";
 	}
+
+	@PostMapping("/{id}/update")
+	public String postMethodName(@ModelAttribute @Validated HouseEditForm houseEditForm,
+			BindingResult bindingResult,
+			@PathVariable(name = "id") Integer id,
+			RedirectAttributes redirectAttributes,
+			Model model) {
+
+				Optional<House> optionalHouse = houseService.findHousesById(id);
+
+				if (optionalHouse.isEmpty()) {
+					redirectAttributes.addFlashAttribute("errorMessage","民宿が存在していません。");
+					return "redirect:/admin/houses";
+				}
+
+				House house = optionalHouse.get();
+
+				if (bindingResult.hasErrors()) {
+					model.addAttribute("house", house);
+					model.addAttribute("houseEditForm", houseEditForm);
+
+					return "admin/houses/edit";
+				}
+
+				houseService.updateHouse(houseEditForm, house);
+				redirectAttributes.addFlashAttribute("successMessage", "民宿情報を編集しました。");
+
+		return "redirect:/admin/houses";
+	}
+
+	@PostMapping("/{id}/delete")
+	public String postMethodName(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+		Optional<House> optionalHouse = houseService.findHousesById(id);
+
+
+		if (optionalHouse.isEmpty()) {
+			redirectAttributes.addFlashAttribute("errorMessage","民宿が存在しません。");
+			return "redirect:/admin/houses";
+		}
+		
+		House house = optionalHouse.get();
+
+		houseService.deleteHouse(house);
+		redirectAttributes.addFlashAttribute("successMessage", "民宿を削除しました。");
+		
+		
+		return "redirect:/admin/houses";
+	}
+	
 
 }
