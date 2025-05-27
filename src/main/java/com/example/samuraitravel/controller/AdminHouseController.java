@@ -22,7 +22,7 @@ import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.form.HouseEditForm;
 import com.example.samuraitravel.form.HouseRegisterForm;
 import com.example.samuraitravel.service.HouseService;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/admin/houses")
@@ -174,6 +174,8 @@ public class AdminHouseController {
 		
 		return "redirect:/admin/houses";
 	}
+
+	
 	
 
 }

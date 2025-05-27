@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.samuraitravel.entity.Role;
 import com.example.samuraitravel.entity.User;
 import com.example.samuraitravel.form.SignupForm;
+import com.example.samuraitravel.form.UserEditForm;
 import com.example.samuraitravel.repository.RoleRepository;
 import com.example.samuraitravel.repository.UserRepository;
 
@@ -24,6 +25,7 @@ public class UserService {
 
 	}
 
+	// ユーザー登録
 	@Transactional
 	public User createUser(SignupForm signupForm) {
 		User user = new User();
@@ -42,20 +44,45 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	// ユーザー更新
+	@Transactional
+	public void updateUser(UserEditForm userEditForm, User user) {
+		user.setName(userEditForm.getName());
+		user.setFurigana(userEditForm.getFurigana());
+		user.setPostalCode(userEditForm.getPostalCode());
+		user.setAddress(userEditForm.getAddress());
+		user.setPhoneNumber(userEditForm.getPhoneNumber());
+		user.setEmail(userEditForm.getEmail());
+
+		userRepository.save(user);
+	}
+
+	// メールアドレスが登録済みかのチェック
 	public boolean isEmailRegistered(String email) {
 		User user = userRepository.findByEmail(email);
 
 		return user != null;
 	}
 
+	// パスワードと確認用パスワードの比較チェック
 	public boolean isSamePassword(String password, String passwordConfirmation) {
 
 		return password.equals(passwordConfirmation);
 	}
-	
+
+	// ユーザーをEnabled
 	public void enableUser(User user) {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
 
+	// メールアドレスが変更されたかどうかのチェック
+	public boolean isEmailChanged(UserEditForm userEditForm, User user){
+		return !userEditForm.getEmail().equals(user.getEmail());
+	}
+
+	// 指定したメールアドレスを持つユーザーを取得する
+	public User findUserByEmail(String email){
+		return userRepository.findByEmail(email);
+	}
 }
