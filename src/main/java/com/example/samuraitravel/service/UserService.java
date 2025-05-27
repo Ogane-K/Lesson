@@ -1,6 +1,8 @@
 package com.example.samuraitravel.service;
 
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -97,6 +99,11 @@ public class UserService {
 	// 指定されたキーワードを氏名またはフリガナに含むユーザーをページングされた状態で取得する
 	public Page<User> findUserByNameLikeOrFuriganaLike(String nameKeyword, String furiganaKeyword, Pageable pageable) {
 		return userRepository.findByNameLikeOrFuriganaLike("%" + nameKeyword + "%", "%" + furiganaKeyword + "%",pageable);
+	}
+
+	// idを参照してユーザーを検索
+	public Optional<User> findUserById(Integer id){
+		return userRepository.findById(id);
 	}
 
 }

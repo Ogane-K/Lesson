@@ -23,13 +23,18 @@
                     <!-- 検索ボックス -->
                     <div class="d-flex justify-content-between align-items-end">
                         <form method="get" th:action="@{/admin/users}" class="mb-3">
-                            <div class="innput-group">
+                            <div class="input-group">
                                 <input type="text" class="form-control" name="keyword" th:value="${keyword}"
                                     placeholder="氏名・フリガナ">
                                 <button type="submit" class="btn text-white shadow-sm samuraitravel-btn">検索</button>
                             </div>
                         </form>
                     </div>
+
+                    <!-- エラーメッセージ表示場所 -->
+                     <div th:if="${errorMessage}" class="alert alert-danger">
+                        <span th:text="${erorrMessage}"></span>
+                     </div>
 
                     <!-- 表示部分 -->
                     <table class="table">
@@ -48,7 +53,7 @@
                                 <td th:text="${user.name}"></td>
                                 <td th:text="${user.furigana}"></td>
                                 <td th:text="${user.email}"></td>
-                                <td><a href="#">詳細</a></td>
+                                <td><a th:href="@{/admin/users/__${user.id}__}">詳細</a></td>
                             </tr>
                         </tbody>
                     </table>
