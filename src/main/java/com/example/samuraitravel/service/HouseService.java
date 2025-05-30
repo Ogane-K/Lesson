@@ -118,7 +118,23 @@ public class HouseService {
 	}
 
 	@Transactional
-	public void deleteHouse(House house){
+	public void deleteHouse(House house) {
 		houseRepository.delete(house);
 	}
+
+	// 指定されたキーワードを民宿名または住所に含む民宿をページングされた状態で取得する
+	public Page<House> findHousesByNameLikeOrAddressLike(String nameKeyword, String addressKeyword,Pageable pageable){
+		return houseRepository.findByNameLikeOrAddressLike("%" + nameKeyword + "%","%" +addressKeyword + "%", pageable);
+	}
+
+	// s指定されたキーワードを住所に含む民宿を、ページングされた状態で取得する
+	public Page<House> findHousesByAddressLike(String area, Pageable pageable) {
+		return houseRepository.findByAddressLike("%" + area + "%", pageable);
+	}
+
+	// 指定された宿泊料金以下の民宿をページングされた状態で取得する
+	public Page<House> findHousesByPriceLessthanEqual(Integer price, Pageable pageable) {
+		return houseRepository.findByPriceLessThanEqal(price, pageable);
+	}
+
 }
