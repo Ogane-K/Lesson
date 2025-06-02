@@ -16,7 +16,7 @@ import com.example.samuraitravel.form.UserEditForm;
 import com.example.samuraitravel.security.UserDetailsImpl;
 import com.example.samuraitravel.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/user")

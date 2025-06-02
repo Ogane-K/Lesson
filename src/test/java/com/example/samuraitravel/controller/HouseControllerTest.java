@@ -35,4 +35,19 @@ public class HouseControllerTest {
         .andExpect(view().name("houses/index"));
     }
 
+        @Test
+    public void 未ログインの場合は会員用の民宿詳細ページが正しく表示される() throws Exception {
+        mockMvc.perform(get("/houses/1"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("houses/show"));
+    }
+
+    @Test
+    @WithUserDetails("taro.samurai@example.com")
+    public void ログイン済みの場合は会員用の民宿詳細ページが正しく表示される() throws Exception {
+        mockMvc.perform(get("/houses/1"))
+               .andExpect(status().isOk())
+               .andExpect(view().name("houses/show"));
+    }    
+
 }

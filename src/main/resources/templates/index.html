@@ -46,7 +46,7 @@
 				<h2 class="text-center mb-3">新着</h2>
 				<div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
 					<div class="col" th:each="newHouse : ${newHouses}">
-						<a href="#" class="link-dark samuraitravel-card-link">
+						<a th:href="@{/houses/__${newHouse.id}__}" class="link-dark samuraitravel-card-link">
 							<div class="card h-100">
 								<img th:if="${newHouse.imageName}" th:src="@{/storage/__${newHouse.imageName}__}"
 									class="card-img-top samuraitravel-vertical-card-image" alt="店舗画像">

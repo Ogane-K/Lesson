@@ -20,7 +20,7 @@ public class WebSecurityConfig {
 				//	アクセス許可範囲の設定
 				.authorizeHttpRequests((requests) -> requests
 						//	下記URLは全ユーザーにアクセス許可
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/login", "/signup/**","/houses")
+						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/login", "/signup/**","/houses","/houses/{id}")
 						.permitAll()
 						//	下記URLは管理者(ADMIN)にのみアクセス許可
 						.requestMatchers("/admin/**").hasRole("ADMIN")

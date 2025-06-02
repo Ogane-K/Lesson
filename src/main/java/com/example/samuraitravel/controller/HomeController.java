@@ -2,6 +2,7 @@ package com.example.samuraitravel.controller;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,5 +27,7 @@ public class HomeController {
 
 		return "index";
 	}
+
+	
 
 }
