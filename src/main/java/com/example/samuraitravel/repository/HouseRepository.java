@@ -1,22 +1,42 @@
 package com.example.samuraitravel.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.samuraitravel.entity.House;
-import java.util.List;
-
 
 public interface HouseRepository extends JpaRepository<House, Integer> {
 
 	public Page<House> findByNameLike(String keyword, Pageable pageable);
+
 	public House findFirstByOrderByIdDesc();
-	
-	public Page<House> findByNameLikeOrAddressLike(String nameKeyword, String addressKeyword, Pageable pageable);
-	public Page<House> findByAddressLike(String area, Pageable pageable);
-	public Page<House> findByPriceLessThanEqal(Integer price, Pageable pageable);
 
+	// nameとaddressを元に検索
+	public Page<House> findByNameLikeOrAddressLikeOrderByCreatedAtDesc(String nameKeyword, String addressKeyword,
+			Pageable pageable);
 
-	
+	public Page<House> findByNameLikeOrAddressLikeOrderByPriceAsc(String nameKeyword, String addressKeyword,
+			Pageable pageable);
+
+	// areaを元に検索
+	public Page<House> findByAddressLikeOrderByCreatedAtDesc(String area, Pageable pageable);
+
+	public Page<House> findByAddressLikeOrderByPriceAsc(String area, Pageable pageable);
+
+	// priceを元に検索
+	public Page<House> findByPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
+
+	public Page<House> findByPriceLessThanEqualOrderByPriceAsc(Integer Price, Pageable pageable);
+
+	// すべてを検索
+	public Page<House> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+	public Page<House> findAllByOrderByPriceAsc(Pageable pageable);
+
+	// 新着10件を降順で検索
+	public List<House> findTop10ByOrderByCreatedAtDesc();
+
 }

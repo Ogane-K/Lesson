@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,6 +52,7 @@ public class HouseService {
 		return houseRepository.findFirstByOrderByIdDesc();
 	}
 
+	// 新規民宿の登録
 	@Transactional
 	public void createHouse(HouseRegisterForm houseRegisterForm) {
 		House house = new House();
@@ -94,6 +96,53 @@ public class HouseService {
 		}
 	}
 
+	// 指定されたキーワードを民宿名または住所に含む民宿を作成日時が新しい順にページングされた状態で取得
+	public Page<House> findHousesByNameLikeOrAddressLikeOrderByCreatedAtDesc(String nameKeyword, String addressKeyword,
+			Pageable pageable) {
+		return houseRepository.findByNameLikeOrAddressLikeOrderByCreatedAtDesc(nameKeyword, addressKeyword, pageable);
+	}
+
+	// 指定されたキーワードを民宿名または住所に含む民宿を宿泊料金が安い順にページングされた状態で取得
+	public Page<House> findHousesByNameLikeOrAddressLikeOrderByPriceAsc(String namneKeyword, String addressKeyword,
+			Pageable pageable) {
+		return houseRepository.findByNameLikeOrAddressLikeOrderByPriceAsc(namneKeyword, addressKeyword, pageable);
+	}
+
+	// 指定されたキーワードを住所に含む民宿を作成日時が新しい順にページングされた状態で取得
+	public Page<House> findHousesByAddressLikeOrderByCreatedAtDesc(String area, Pageable pageable) {
+		return houseRepository.findByAddressLikeOrderByCreatedAtDesc("%" + area + "%", pageable);
+	}
+
+	// 指定されたキーワードを住所に含む民宿を宿泊料金が安い順にページングされた状態で取得
+	public Page<House> findHousesByAddressLikeOrderByPriceAsc(String area, Pageable pageable) {
+		return houseRepository.findByAddressLikeOrderByPriceAsc("%" + area + "%", pageable);
+	}
+
+	// 指定された宿泊料金以下の民宿を作成日時が新しい順にページングされた状態で取得
+	public Page<House> findHousesByPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable) {
+		return houseRepository.findByPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+	}
+
+	// 指定された宿泊料金以下の民宿を宿泊料金が安い順にページングされた状態で取得
+	public Page<House> findHousesByPriceLessThanEqualOrderByPriceAsc(Integer price, Pageable pageable) {
+		return houseRepository.findByPriceLessThanEqualOrderByPriceAsc(price, pageable);
+	}
+
+	// すべての民宿を作成日時が新しい順にページングされた状態で取得
+	public Page<House> findAllHousesByOrderByCreatedAtDesc(Pageable pageable) {
+		return houseRepository.findAllByOrderByCreatedAtDesc(pageable);
+	}
+
+	// すべての民宿を宿泊料金が安い順にページングされた状態で取得
+	public Page<House> findAllHousesByOrderByPriceAsc(Pageable pageable) {
+		return houseRepository.findAllByOrderByPriceAsc(pageable);
+	}
+
+	public List<House> findTop10HousesByOrderByCreatedAtDesc() {
+		return houseRepository.findTop10ByOrderByCreatedAtDesc();
+	}
+
+	// 民宿データの更新
 	@Transactional
 	public void updateHouse(HouseEditForm houseEditForm, House house) {
 		MultipartFile imageFile = houseEditForm.getImageFile();
@@ -120,21 +169,6 @@ public class HouseService {
 	@Transactional
 	public void deleteHouse(House house) {
 		houseRepository.delete(house);
-	}
-
-	// 指定されたキーワードを民宿名または住所に含む民宿をページングされた状態で取得する
-	public Page<House> findHousesByNameLikeOrAddressLike(String nameKeyword, String addressKeyword,Pageable pageable){
-		return houseRepository.findByNameLikeOrAddressLike("%" + nameKeyword + "%","%" +addressKeyword + "%", pageable);
-	}
-
-	// s指定されたキーワードを住所に含む民宿を、ページングされた状態で取得する
-	public Page<House> findHousesByAddressLike(String area, Pageable pageable) {
-		return houseRepository.findByAddressLike("%" + area + "%", pageable);
-	}
-
-	// 指定された宿泊料金以下の民宿をページングされた状態で取得する
-	public Page<House> findHousesByPriceLessthanEqual(Integer price, Pageable pageable) {
-		return houseRepository.findByPriceLessThanEqal(price, pageable);
 	}
 
 }

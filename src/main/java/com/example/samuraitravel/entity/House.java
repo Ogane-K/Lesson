@@ -46,7 +46,7 @@ public class House {
 	private String phoneNumber;
 
 	@Column(name = "created_at", insertable = false, updatable = false)
-	private Timestamp createAt;
+	private Timestamp createdAt;
 
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
