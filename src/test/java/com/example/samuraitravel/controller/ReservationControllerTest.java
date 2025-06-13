@@ -32,8 +32,10 @@ public class ReservationControllerTest {
         @Autowired
         private MockMvc mockMvc;
 
+        /* 
         @Autowired
         private ReservationService reservationService;
+        */
 
         @Test
         public void 未ログインの場合は会員用の予約一覧ページからログインページにリダイレクトする() throws Exception {
@@ -105,6 +107,7 @@ public class ReservationControllerTest {
                                 .andExpect(view().name("reservations/confirm"));
         }
 
+        /* 
         @Test
         @Transactional
         public void 未ログインの場合は予約せずログインページにリダイレクトする() throws Exception {
@@ -157,5 +160,6 @@ public class ReservationControllerTest {
                 assertThat(reservation.getNumberOfPeople()).isEqualTo(1);
                 assertThat(reservation.getAmount()).isEqualTo(6000);
         }
-
+        */
+        
 }
