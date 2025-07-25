@@ -18,7 +18,7 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "houses")
-@ToString(exclude = "reservations")
+@ToString(exclude = { "reservations", "reviews", "favorites" })
 public class House {
 
 	@Id
@@ -56,7 +56,13 @@ public class House {
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "house" , fetch = FetchType.EAGER, cascade =  CascadeType.REMOVE)
+	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Reservation> reservations;
+
+	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Review> reviews;
+
+	@OneToMany(mappedBy = "house", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Favorite> favorites;
 
 }

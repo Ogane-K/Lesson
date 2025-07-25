@@ -22,7 +22,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests((requests) -> requests
 						// 下記URLは全ユーザーにアクセス許可
 						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/login", "/signup/**",
-								"/houses", "/houses/{id}", "/stripe/webhook")
+								"/houses", "/houses/{id}", "/stripe/webhook", "/houses/{houseId}/reviews")
 						.permitAll()
 						// 下記URLは管理者(ADMIN)にのみアクセス許可
 						.requestMatchers("/admin/**").hasRole("ADMIN")
